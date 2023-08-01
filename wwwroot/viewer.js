@@ -31,7 +31,7 @@ export function initViewer(container) {
 export function loadModel(viewer, urn) {
     function onDocumentLoadSuccess(doc) {
         viewer.loadDocumentNode(doc, doc.getRoot().getDefaultGeometry());
-        viewer.loadExtension('Autodesk.VisualClusters', {attribName: 'Spool Name'});
+        viewer.loadExtension('Autodesk.VisualClusters', {attribName: 'Assembly Name'});
     }
     function onDocumentLoadFailure(code, message) {
         alert('Could not load model. See console for more details.');
