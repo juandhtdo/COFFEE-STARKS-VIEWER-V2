@@ -1,9 +1,9 @@
 import { BaseExtension } from './BaseExtension.js';
-import { SummaryPanel } from './SummaryPanel.js';
+import { BoqPanel } from './BoqPanel.js';
 
-const SUMMARY_PROPS = ['Length', 'Area', 'Volume', 'Density', 'Mass', 'Price'];
+const BOQ_PROPS = ['ED_QuantityMeasure'];
 
-class SummaryExtension extends BaseExtension {
+class BoqExtension extends BaseExtension {
     constructor(viewer, options) {
         super(viewer, options);
         this._button = null;
@@ -12,7 +12,7 @@ class SummaryExtension extends BaseExtension {
 
     load() {
         super.load();
-        console.log('SummaryExtension loaded.');
+        console.log('BoqExtension loaded.');
         return true;
     }
 
@@ -27,13 +27,13 @@ class SummaryExtension extends BaseExtension {
             this._panel.uninitialize();
             this._panel = null;
         }
-        console.log('SummaryExtension unloaded.');
+        console.log('BoqExtension unloaded.');
         return true;
     }
 
     onToolbarCreated() {
-        this._panel = new SummaryPanel(this, 'model-summary-panel', 'Model Summary');
-        this._button = this.createToolbarButton('summary-button', 'https://img.icons8.com/small/32/brief.png', 'Show Model Summary');
+        this._panel = new BoqPanel(this, 'model-boq-panel', 'Boq Summary');
+        this._button = this.createToolbarButton('boq-button', 'https://img.icons8.com/small/32/brief.png', 'Show Model Boq Summary');
         this._button.onClick = () => {
             this._panel.setVisible(!this._panel.isVisible());
             this._button.setState(this._panel.isVisible() ? Autodesk.Viewing.UI.Button.State.ACTIVE : Autodesk.Viewing.UI.Button.State.INACTIVE);
@@ -63,15 +63,15 @@ class SummaryExtension extends BaseExtension {
             const selectedIds = this.viewer.getSelection();
             const isolatedIds = this.viewer.getIsolatedNodes();
             if (selectedIds.length > 0) { // If any nodes are selected, compute the aggregates for them
-                this._panel.update(this.viewer.model, selectedIds, SUMMARY_PROPS);
+                this._panel.updateGroupedByUnit(this.viewer.model, selectedIds, BOQ_PROPS);
             } else if (isolatedIds.length > 0) { // Or, if any nodes are isolated, compute the aggregates for those
-                this._panel.update(this.viewer.model, isolatedIds, SUMMARY_PROPS);
+                this._panel.updateGroupedByUnit(this.viewer.model, isolatedIds, BOQ_PROPS);
             } else { // Otherwise compute the aggregates for all nodes
                 const dbids = await this.findLeafNodes(this.viewer.model);
-                this._panel.update(this.viewer.model, dbids, SUMMARY_PROPS);
+                this._panel.updateGroupedByUnit(this.viewer.model, dbids, BOQ_PROPS);
             }
         }
     }
 }
 
-Autodesk.Viewing.theExtensionManager.registerExtension('SummaryExtension', SummaryExtension);
+Autodesk.Viewing.theExtensionManager.registerExtension('BoqExtension', BoqExtension);
