@@ -1,7 +1,7 @@
 import { BaseExtension } from './BaseExtension.js';
 import { BoqPanel } from './BoqPanel.js';
 
-const BOQ_PROPS = ['ED_QuantityMeasure'];
+const BOQ_PROPS = ['ED_BoQCode'];
 
 class BoqExtension extends BaseExtension {
     constructor(viewer, options) {
@@ -33,7 +33,7 @@ class BoqExtension extends BaseExtension {
 
     onToolbarCreated() {
         this._panel = new BoqPanel(this, 'model-boq-panel', 'Boq Summary');
-        this._button = this.createToolbarButton('boq-button', 'https://img.icons8.com/small/32/brief.png', 'Show Model Boq Summary');
+        this._button = this.createToolbarButton('boq-button', 'https://img.icons8.com/ios-filled/50/receipt.png', 'Show BoQ Summary');
         this._button.onClick = () => {
             this._panel.setVisible(!this._panel.isVisible());
             this._button.setState(this._panel.isVisible() ? Autodesk.Viewing.UI.Button.State.ACTIVE : Autodesk.Viewing.UI.Button.State.INACTIVE);
