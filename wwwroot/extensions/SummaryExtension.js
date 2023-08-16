@@ -1,7 +1,7 @@
 import { BaseExtension } from './BaseExtension.js';
 import { SummaryPanel } from './SummaryPanel.js';
 
-const SUMMARY_PROPS = ['Length', 'Area', 'Volume', 'Density', 'Mass', 'Price'];
+const SUMMARY_PROPS = ['ED_BoQCode','Length', 'Area', 'Volume', 'Density', 'Mass', 'Price'];
 
 class SummaryExtension extends BaseExtension {
     constructor(viewer, options) {
