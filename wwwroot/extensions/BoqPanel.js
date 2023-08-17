@@ -93,7 +93,7 @@ export class BoqPanel extends Autodesk.Viewing.UI.PropertyPanel {
                             max: Math.max(aggregate.max, value),
                             units: property.units,
                             precision: property.precision,
-                            prog: aggregate.prog + progress
+                            prog: aggregate.prog + ((progress/100) * value)
                         }
                     }
                 };
@@ -107,8 +107,8 @@ export class BoqPanel extends Autodesk.Viewing.UI.PropertyPanel {
                     const category = `${propName}: ${boqCode} (${unit})`;
                     this.addProperty(`Count (${unit})`, group.count, category);
                     this.addProperty(`Sum (${unit})`, this.toDisplayUnits(group.sum, group.units, group.precision), category);
-                    this.addProperty(`%Prog (%)`, this.toDisplayUnits((group.prog/group.count), group.units, group.precision), category);
-                    this.addProperty(`Progress (${unit})`, this.toDisplayUnits((group.prog/100)*group.sum, group.units, group.precision), category);
+                    this.addProperty(`%Prog (%)`, this.toDisplayUnits((group.prog/group.sum)*100, group.units, group.precision), category);
+                    this.addProperty(`Progress (${unit})`, this.toDisplayUnits(group.prog, group.units, group.precision), category);
                     //this.addProperty(`Avg (${unit})`, this.toDisplayUnits(group.sum / group.count, group.units, group.precision), category);
                     //this.addProperty(`Min (${unit})`, this.toDisplayUnits(group.min, group.units, group.precision), category);
                     //this.addProperty(`Max (${unit})`, this.toDisplayUnits(group.max, group.units, group.precision), category);
