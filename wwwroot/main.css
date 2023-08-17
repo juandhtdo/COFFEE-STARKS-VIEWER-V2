@@ -5,6 +5,10 @@ body, html {
     font-family: ArtifaktElement;
 }
 
+.tick text{
+    font-size: 10px;
+}
+
 #header, #sidebar, #preview {
     position: absolute;
 }

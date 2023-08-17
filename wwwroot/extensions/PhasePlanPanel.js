@@ -1,6 +1,94 @@
 const ACTIVITY_PROPERTY = 'CN_ActivityID';
 const PHASING_DATA_URL = './extensions/phasing.csv';
 
+export class PhasePlanPanel extends Autodesk.Viewing.UI.DockingPanel {
+    constructor(extension, id, title, options) {
+        super(extension.viewer.container, id, title, options);
+        this.extension = extension;
+        this.container.style.left = (options.x || 0) + 'px';
+        this.container.style.top = (options.y || 0) + 'px';
+        this.container.style.width = (options.width || 600) + 'px';
+        this.container.style.height = '600px';
+        this.container.style.resize = 'none';
+    }
+
+    initialize() {// Create a new <div> element
+        
+        
+        this.title = this.createTitleBar(this.titleLabel || this.container.id);
+        this.initializeMoveHandlers(this.title);
+        this.container.appendChild(this.title);
+
+        //this.content = document.createElement('div');
+        //this.content.style.height = '350px';
+        //this.content.style.backgroundColor = 'white';
+        //this.content.innerHTML = `<div class="datagrid-container" style="position: relative; height: 200px;"></div>`;
+        //this.container.appendChild(this.content);
+
+
+        const divElement = document.createElement('div');
+
+        // Set the attributes for the <div> element
+        divElement.id = 'timeline';
+        divElement.className = 'position-absolute';
+        divElement.style.width = '97%';
+        divElement.style.height = '90%'
+        divElement.style.right = '0';
+        divElement.style.backgroundColor = 'white';
+        divElement.style.overflowY = scroll;
+
+        // Create a <label> element
+        const labelElement = document.createElement('label');
+
+        // Set the attributes for the <label> element
+        labelElement.id = 'timeline-label';
+        labelElement.htmlFor = 'timeline-input';
+        labelElement.className = 'form-label';
+        labelElement.textContent = 'Timeline';
+        labelElement.style.width = '500px';
+
+        // Create an <input> element
+        const inputElement = document.createElement('input');
+
+        // Set the attributes for the <input> element
+        inputElement.type = 'range';
+        inputElement.className = 'form-range';
+        inputElement.style.width = '500px';
+        inputElement.min = '0';
+        inputElement.max = '100';
+        inputElement.id = 'timeline-input';
+
+        // Append the <label> and <input> elements to the <div> element
+        divElement.appendChild(labelElement);
+        divElement.appendChild(inputElement);
+
+        // Append the <div> element to the document body or any desired parent element
+        // For example, appending to the body:
+        this.container.appendChild(divElement);
+        
+                
+    }
+
+    async update(viewer,model) {
+        
+            
+        const activityMap = await getActivityMap(model, ACTIVITY_PROPERTY);
+        const phasingData = await getPhasingData();
+        setupTimelineInput(viewer, phasingData, activityMap);
+        setupTimelineChart(viewer, phasingData, activityMap);
+    
+    }
+
+    async deletesvg() {
+        var timelineDiv = document.getElementById("timeline");
+        var svgElement = timelineDiv.querySelectorAll('svg');
+        timelineDiv.removeChild(svgElement[0]);
+        
+    }
+}
+
+    
+
 async function getPhasingData() {
     const resp = await fetch(PHASING_DATA_URL);
     if (!resp.ok) {
@@ -149,81 +237,9 @@ function setupTimelineChart(viewer, phasingData, activityMap) {
     d3.select('#timeline').append('svg').attr('width', width).datum(timelineData).call(chart);
 }
 
-export class PhasePlanPanel extends Autodesk.Viewing.UI.DockingPanel {
-    constructor(extension, id, title, options) {
-        super(extension.viewer.container, id, title, options);
-        this.extension = extension;
-        this.container.style.left = (options.x || 0) + 'px';
-        this.container.style.top = (options.y || 0) + 'px';
-        this.container.style.width = (options.width || 600) + 'px';
-        this.container.style.height = '600px';
-        this.container.style.resize = 'none';
-    }
-
-    initialize() {// Create a new <div> element
-        this.title = this.createTitleBar(this.titleLabel || this.container.id);
-        this.initializeMoveHandlers(this.title);
-        this.container.appendChild(this.title);
-
-        //this.content = document.createElement('div');
-        //this.content.style.height = '350px';
-        //this.content.style.backgroundColor = 'white';
-        //this.content.innerHTML = `<div class="datagrid-container" style="position: relative; height: 200px;"></div>`;
-        //this.container.appendChild(this.content);
 
 
-        const divElement = document.createElement('div');
 
-        // Set the attributes for the <div> element
-        divElement.id = 'timeline';
-        divElement.className = 'position-absolute h-100';
-        divElement.style.width = '95%';
-        divElement.style.right = '0';
-        divElement.style.backgroundColor = 'white';
-        divElement.style.overflowY = scroll;
 
-        // Create a <label> element
-        const labelElement = document.createElement('label');
-
-        // Set the attributes for the <label> element
-        labelElement.id = 'timeline-label';
-        labelElement.htmlFor = 'timeline-input';
-        labelElement.className = 'form-label';
-        labelElement.textContent = 'Timeline';
-
-        // Create an <input> element
-        const inputElement = document.createElement('input');
-
-        // Set the attributes for the <input> element
-        inputElement.type = 'range';
-        inputElement.className = 'form-range';
-        inputElement.width = '70%'
-        inputElement.min = '0';
-        inputElement.max = '100';
-        inputElement.id = 'timeline-input';
-
-        // Append the <label> and <input> elements to the <div> element
-        divElement.appendChild(labelElement);
-        divElement.appendChild(inputElement);
-
-        // Append the <div> element to the document body or any desired parent element
-        // For example, appending to the body:
-        this.container.appendChild(divElement);
-        
-        
-        
-    }
-
-    async update(viewer,model) {
-        
-            const activityMap = await getActivityMap(model, ACTIVITY_PROPERTY);
-            const phasingData = await getPhasingData();
-            setupTimelineInput(viewer, phasingData, activityMap);
-            setupTimelineChart(viewer, phasingData, activityMap);
-        
-    }
-
-    
-}
 
     

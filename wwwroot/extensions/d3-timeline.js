@@ -20,7 +20,8 @@
                 tickTime: d3.time.hours,
                 tickInterval: 1,
                 tickSize: 6,
-                tickValues: null
+                tickValues: null,
+                fontSize: 10
             },
             colorCycle = d3.scale.category20(),
             colorPropertyName = null,
@@ -71,6 +72,7 @@
             }
 
             nav.append("text")
+                
                 .attr("transform", "translate(" + 20 + ", 0)")
                 .attr("x", 0)
                 .attr("y", 14)
@@ -93,6 +95,7 @@
 
             nav.append("text")
                 .attr("transform", "translate(" + leftNavMargin + ", 0)")
+                
                 .attr("x", 0)
                 .attr("y", 14)
                 .attr("class", "chevron")
@@ -104,6 +107,7 @@
 
             nav.append("text")
                 .attr("transform", "translate(" + rightNavMargin + ", 0)")
+                
                 .attr("x", 0)
                 .attr("y", 14)
                 .attr("class", "chevron")
@@ -126,7 +130,7 @@
 
         var appendTimeAxisTick = function (g, xAxis, maxStack) {
             g.append("g")
-                .attr("class", "axis")
+                .attr("class", "axis")                
                 .attr("transform", "translate(" + 0 + "," + (margin.top + (itemHeight + itemMargin) * maxStack) + ")")
                 .attr(timeAxisTickFormat.stroke, timeAxisTickFormat.spacing)
                 .call(xAxis.tickFormat("").tickSize(-(margin.top + (itemHeight + itemMargin) * (maxStack - 1) + 3), 0, 0));
@@ -150,7 +154,8 @@
             var rowsDown = margin.top + (fullItemHeight / 2) + fullItemHeight * (yAxisMapping[index] || 1);
 
             gParent.append("text")
-                .attr("class", "timeline-label")
+                
+                .attr("class", "timeline-label")                
                 .attr("transform", "translate(" + labelMargin + "," + rowsDown + ")")
                 .text(hasLabel ? labelFunction(datum.label) : datum.id)
                 .on("click", function (d, i) { click(d, index, datum); });
@@ -307,7 +312,7 @@
                         ;
 
                     g.selectAll("svg").data(data).enter()
-                        .append("text")
+                        .append("text")                        
                         .attr("x", getXTextPos)
                         .attr("y", getStackTextPosition)
                         .text(function (d) {

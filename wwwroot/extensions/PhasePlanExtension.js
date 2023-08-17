@@ -10,7 +10,7 @@ class PhasePlanExtension extends BaseExtension {
         this._panel = null;
     }
 
-    async load() {
+    load() {
         super.load();
         console.log('PhasePlanExtension loaded.');
         return true;
@@ -40,6 +40,10 @@ class PhasePlanExtension extends BaseExtension {
             if (this._panel.isVisible() && this.viewer.model) {
                 this.update();
             }
+            if (!this._panel.isVisible() && this.viewer.model)
+            {
+                this.restartSvg();
+            }
         };
 
     }
@@ -56,6 +60,10 @@ class PhasePlanExtension extends BaseExtension {
         const dbids = await this.findLeafNodes(this.viewer.model);
         this._panel.update(this.viewer,this.viewer.model);
         
+    }
+
+    async restartSvg(){
+        this._panel.deletesvg();
     }
 }
 
