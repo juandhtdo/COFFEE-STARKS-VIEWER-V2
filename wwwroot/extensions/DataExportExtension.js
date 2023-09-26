@@ -1,7 +1,7 @@
 import { BaseExtension } from './BaseExtension.js';
-import { DataGridPanel } from './DataGridPanel.js';
+import { DataExportPanel } from './DataExportPanel.js';
 
-class DataGridExtension extends BaseExtension {
+class DataExportExtension extends BaseExtension {
     constructor(viewer, options) {
         super(viewer, options);
         this._button = null;
@@ -14,7 +14,7 @@ class DataGridExtension extends BaseExtension {
             this.loadScript('https://unpkg.com/tabulator-tables@4.9.3/dist/js/tabulator.min.js', 'Tabulator'),
             this.loadStylesheet('https://unpkg.com/tabulator-tables@4.9.3/dist/css/tabulator_midnight.min.css')
         ]);
-        console.log('DataGridExtension loaded.');
+        console.log('DataExportExtension loaded.');
         return true;
     }
 
@@ -29,13 +29,13 @@ class DataGridExtension extends BaseExtension {
             this._panel.uninitialize();
             this._panel = null;
         }
-        console.log('DataGridExtension unloaded.');
+        console.log('DataExportExtension unloaded.');
         return true;
     }
 
     onToolbarCreated() {
-        this._panel = new DataGridPanel(this, 'dashboard-datagrid-panel', 'Data Grid', { x: 10, y: 10 });
-        this._button = this.createToolbarButton('dashboard-datagrid-button', 'https://img.icons8.com/small/32/activity-grid.png', 'Show Data Grid');   
+        this._panel = new DataExportPanel(this, 'dataexport-panel', 'Data Export', { x: 10, y: 10 });
+        this._button = this.createToolbarButton('dataexport-button', 'https://img.icons8.com/ios-glyphs/30/down--v1.png', 'Show Data Export');   
         this._button.onClick = () => {
             this._panel.setVisible(!this._panel.isVisible());
             this._button.setState(this._panel.isVisible() ? Autodesk.Viewing.UI.Button.State.ACTIVE : Autodesk.Viewing.UI.Button.State.INACTIVE);
@@ -56,6 +56,10 @@ class DataGridExtension extends BaseExtension {
         const dbids = await this.findLeafNodes(this.viewer.model);
         this._panel.update(this.viewer.model, dbids);
     }
+
+    async updatemodel(){
+        this._panel.updatemodel(this.viewer.model)
+    }
 }
 
-Autodesk.Viewing.theExtensionManager.registerExtension('DataGridExtension', DataGridExtension);
+Autodesk.Viewing.theExtensionManager.registerExtension('DataExportExtension', DataExportExtension);

@@ -4,6 +4,7 @@ import './extensions/SummaryExtension.js';
 import './extensions/DataGridExtension.js';
 import './extensions/PhasePlanExtension.js';
 import './extensions/BoqExtension.js';
+import './extensions/DataExportExtension.js';
 
 async function getAccessToken(callback) {
     try {
@@ -23,7 +24,7 @@ export function initViewer(container) {
     return new Promise(function (resolve, reject) {
         Autodesk.Viewing.Initializer({ getAccessToken }, function () {
             const config = {
-                extensions: ['Autodesk.DocumentBrowser','LoggerExtension','SummaryExtension','DataGridExtension','PhasePlanExtension','BoqExtension']
+                extensions: ['Autodesk.DocumentBrowser','LoggerExtension','SummaryExtension','DataGridExtension','PhasePlanExtension','BoqExtension','DataExportExtension']
             };
             const viewer = new Autodesk.Viewing.GuiViewer3D(container, config);
             viewer.start();

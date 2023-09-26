@@ -8,7 +8,7 @@ const DATAGRID_CONFIG = {
         { title: 'ID', field: 'dbid' },
         { title: 'Name', field: 'name', width: 150 },
         { title: 'Activity Progress', field: 'activityprogress', hozAlign: 'left', formatter: 'progress' },
-        { title: 'Activity Id', field: 'activityid', rowGroup: false},
+        { title: 'Activity Id', field: 'activityid'},
         { title: 'Activity Name', field: 'activityname'},
         { title: 'Planned Start Date', field: 'plannedstartdate'}
     ],
@@ -36,7 +36,7 @@ export class DataGridPanel extends Autodesk.Viewing.UI.DockingPanel {
         this.extension = extension;
         this.container.style.left = (options.x || 0) + 'px';
         this.container.style.top = (options.y || 0) + 'px';
-        this.container.style.width = (options.width || 700) + 'px';
+        this.container.style.width = (options.width || 1000) + 'px';
         this.container.style.height = (options.height || 450) + 'px';
         this.container.style.resize = 'none';
     }
